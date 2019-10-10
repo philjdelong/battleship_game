@@ -1,8 +1,12 @@
 class Board
-  attr_reader :''
+  attr_reader :cells
 
-  def initialize()
-    @
+  def initialize(cells)
+    @cells = cells
   end
 
-end 
+  def valid_coordinate?(coordinate)
+    @cells.include?(coordinate)
+  end
+
+end
