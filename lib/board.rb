@@ -1,4 +1,5 @@
 class Board
+
   attr_reader :cells
 
   def initialize(cells)
@@ -9,4 +10,6 @@ class Board
     @cells.include?(coordinate)
   end
 
+  def valid_placement?(ship, coordinates)
+  end
 end
