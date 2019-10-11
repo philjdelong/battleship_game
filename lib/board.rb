@@ -11,8 +11,20 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    ship.length == coordinates.count
-    #need methods for consecutive and non-diagonal cordinates
+    length && (vertical || horizontal)
+    #length validation
+    length = ship.length == coordinates.count
+    vertical = [coordinates[0].split('')[0] == coordinates[1].split('')[0]]
+    horizontal = [coordinates[0].split('')[1] == coordinates[1].split('')[1]]
+
+    #consecutive validation
+    # if coordinates[0].split('')[0] == coordinates[1].split('')[0]
+    #   true
+    #   else if coordinates[0].split('')[1] == coordinates[1].split('')[1]
+    #     true
+    #   else
+    #     false
+    # end
   end
 
 end
