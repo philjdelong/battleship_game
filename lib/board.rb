@@ -1,26 +1,29 @@
+
 class Board
+    attr_reader :cells
 
-  attr_reader :cells
-
-  def initialize(cells)
-    @cells = cells
+  def initialize
+    @cells = {}
+    @width = ("A".."D")
+    @height = 1..4
+    populate_cells
   end
 
-  def valid_coordinate?(coordinate)
-    @cells.include?(coordinate)
+  def populate_cells
+    @width.each do |letter|
+      @height.each do |number|
+        cell_coords = "#{letter}#{number}"
+        @cells[cell_coords] = Cell.new(cell_coords)
+      end
+    end
   end
 
-  def valid_placement?(ship, coordinates)
-    # vertical = (coordinates[0].split('')[0] == coordinates[1].split('')[0])
-    # horizontal = (coordinates[0].split('')[1] == coordinates[1].split('')[1])
-    #length validation
-    length = ship.length == coordinates.count
-    #consecutive validation
-    length && (vertical || horizontal)
-    # binding.pry
+  def valid_coordinate?(coord)
+    @cells.key?(coord)
+  end
 
-    # coordinates.each do |coordinate|
-    #   if coordinate.split('')[0].succ ==
+  def valid_placement?(ship, coords)
+    ship.length == coords.length
   end
 
   def vertical

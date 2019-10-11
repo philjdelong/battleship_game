@@ -6,64 +6,63 @@ require './lib/board'
 require 'pry'
 
 class BoardTest < Minitest::Test
-
   def setup
-    @cells = {
-      "A1" => Cell.new("A1"),
-      "A2" => Cell.new("A2"),
-      "A3" => Cell.new("A3"),
-      "A4" => Cell.new("A4"),
-      "B1" => Cell.new("B1"),
-      "B2" => Cell.new("B2"),
-      "B3" => Cell.new("B3"),
-      "B4" => Cell.new("B4"),
-      "C1" => Cell.new("C1"),
-      "C2" => Cell.new("C2"),
-      "C3" => Cell.new("C3"),
-      "C4" => Cell.new("C4"),
-      "D1" => Cell.new("D1"),
-      "D2" => Cell.new("D2"),
-      "D3" => Cell.new("D3"),
-      "D4" => Cell.new("D4"),
-    }
-      @board = Board.new(@cells)
-      @cruiser = Ship.new("Cruiser", 3)
-      @submarine = Ship.new("Submarine", 2)
+    @board = Board.new
   end
 
-  def test_it_exists
-    # skip
-    assert_instance_of Board, @board
+  def test_does_the_board_exist
+    expected = Board
+    actual = @board
+
+    assert_instance_of expected, actual
   end
 
-  def test_it_has_a_valid_coordinate
-    # skip
-    assert_equal true, @board.valid_coordinate?("A1")
-    assert_equal true, @board.valid_coordinate?("D4")
-    assert_equal false, @board.valid_coordinate?("A5")
-    assert_equal false, @board.valid_coordinate?("E1")
-    assert_equal false, @board.valid_coordinate?("A22")
+  def test_board_cells_is_a_hash
+    expected = Hash
+    actual = @board.cells
+
+    assert_kind_of expected, actual
   end
 
-  def test_it_can_validate_placement_by_length_of_ship
-    # skip
-    assert_equal false, @board.valid_placement?(@cruiser, ["A1", "A2"])
-    assert_equal false, @board.valid_placement?(@submarine, ["A2", "A3", "A4"])
+  def test_board_contains_cell_class_cell_keys
+    expected_keys = %w[A1 A2 A3 A4 B1 B2 B3 B4 C1 C2 C3 C4 D1 D2 D3 D4]
+    actual = @board.cells.keys
+    assert_equal expected_keys, actual
   end
 
-  def test_it_can_validate_placement_by_consecutive_cells
-    # skip
-    binding.pry
-    assert_equal false, @board.valid_placement?(@cruiser, ["A1", "A2", "A4"])
-    assert_equal false, @board.valid_placement?(@cruiser, ["A1", "C1"])
-    assert_equal false, @board.valid_placement?(@cruiser, ["A3", "A2", "A1"])
-    assert_equal false, @board.valid_placement?(@cruiser, ["C1", "B1"])
+  def test_do_cells_contain_cell_class
+    @board.cells.each do |_key, val|
+      assert_instance_of Cell, val
+    end
   end
 
-  def test_it_can_validate_placement_not_diagonal
-    skip
-    assert_equal false, @board.valid_placement?(@cruiser, ["A1", "B2", "C3"])
-    assert_equal false, @board.valid_placement?(@cruiser, ["C2", "D3"])
+  def test_is_cell_a_valid_coordinate
+    #testing truth
+    expected = true
+    actual = @board.valid_coordinate?("A1")
+    assert_equal expected, actual
+
+    actual = @board.valid_coordinate?("D3")
+    assert_equal expected, actual
+
+    #testing false
+    expected = false
+    actual = @board.valid_coordinate?("G3")
+    assert_equal expected, actual
+
+    actual = @board.valid_coordinate?("Z9")
+    assert_equal expected, actual
+  end
+
+  def test_is_the_ship_on_a_valid_placement
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+    expected = false
+    actual = @board.valid_placement?(cruiser, %w[A1 A2])
+    assert_equal expected, actual
+
+    actual = @board.valid_placement?(submarine, %w[A2 A3 A4])
+    assert_equal expected, actual
   end
 
 end
