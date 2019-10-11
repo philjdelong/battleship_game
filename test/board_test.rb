@@ -47,12 +47,13 @@ class BoardTest < Minitest::Test
 
   def test_it_can_validate_placement_by_length_of_ship
     # skip
-    assert_equal false, @board.valid_placement?(@cruiser, ["A1", "A2", "A3"])
+    assert_equal false, @board.valid_placement?(@cruiser, ["A1", "A2"])
     assert_equal false, @board.valid_placement?(@submarine, ["A2", "A3", "A4"])
   end
 
   def test_it_can_validate_placement_by_consecutive_cells
-    skip
+    # skip
+    binding.pry
     assert_equal false, @board.valid_placement?(@cruiser, ["A1", "A2", "A4"])
     assert_equal false, @board.valid_placement?(@cruiser, ["A1", "C1"])
     assert_equal false, @board.valid_placement?(@cruiser, ["A3", "A2", "A1"])
