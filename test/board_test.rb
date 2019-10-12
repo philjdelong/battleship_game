@@ -1,68 +1,92 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require './lib/ship'
-require './lib/cell'
-require './lib/board'
-require 'pry'
+require'minitest/pride'
+require'./lib/ship'
+require'./lib/cell'
+require'pry'
 
-class BoardTest < Minitest::Test
+
+class CellTest < Minitest::Test	class CellTest < Minitest::Test
+
+
   def setup
-    @board = Board.new
+    @cell_1 = Cell.new("B4")
+    @cell_2 = Cell.new("C3")
+    @cruiser = Ship.new("Cruiser", 3)
   end
 
-  def test_does_the_board_exist
-    expected = Board
-    actual = @board
-
-    assert_instance_of expected, actual
+  def test_it_exists
+    skip
+    assert_instance_of Cell, @cell_1
   end
 
-  def test_board_cells_is_a_hash
-    expected = Hash
-    actual = @board.cells
-
-    assert_kind_of expected, actual
+  def test_it_has_a_coordinate
+    skip
+    assert_equal "B4", @cell_1.coordinate
   end
 
-  def test_board_contains_cell_class_cell_keys
-    expected_keys = %w[A1 A2 A3 A4 B1 B2 B3 B4 C1 C2 C3 C4 D1 D2 D3 D4]
-    actual = @board.cells.keys
-    assert_equal expected_keys, actual
+  def test_it_has_a_ship
+    skip
+    @cell_1.place_ship(@cruiser)
+    assert_equal @cruiser, @cell_1.ship
   end
 
-  def test_do_cells_contain_cell_class
-    @board.cells.each do |_key, val|
-      assert_instance_of Cell, val
-    end
+  def test_it_is_empty
+    skip
+    @cell_1.place_ship(@cruiser)
+    assert_equal false, @cell_1.empty?
   end
 
-  def test_is_cell_a_valid_coordinate
-    #testing truth
-    expected = true
-    actual = @board.valid_coordinate?("A1")
-    assert_equal expected, actual
-
-    actual = @board.valid_coordinate?("D3")
-    assert_equal expected, actual
-
-    #testing false
-    expected = false
-    actual = @board.valid_coordinate?("G3")
-    assert_equal expected, actual
-
-    actual = @board.valid_coordinate?("Z9")
-    assert_equal expected, actual
+  def test_it_can_place_ship
+    skip
+    assert_equal @cruiser, @cell_1.place_ship(@cruiser)
   end
 
-  def test_is_the_ship_on_a_valid_placement
-    cruiser = Ship.new("Cruiser", 3)
-    submarine = Ship.new("Submarine", 2)
-    expected = false
-    actual = @board.valid_placement?(cruiser, %w[A1 A2])
-    assert_equal expected, actual
+  def test_it_is_empty
+    skip
+    @cell_1.fire_upon
+    assert_equal 2, @cell_1.ship.health
+    assert_equal true, @cell_1.fired_upon?
+  end
 
-    actual = @board.valid_placement?(submarine, %w[A2 A3 A4])
-    assert_equal expected, actual
+  #fire_upon testing
+  def test_has_it_been_fired_upon
+    skip
+    assert_equal false, @cell.fired_upon?
+  end
+
+  def test_it_can_be_fired_upon
+    skip
+    @cell.fire_upon
+    assert_equal 2, @cell.health
+    assert_equal true, @cell.fired_upon?
+  end
+
+  def test_it_has_render_ship_with_optional_argument
+    skip
+    @cell_2.place_ship(@cruiser)
+    assert_equal '.', @cell_2.render
+    assert_equal 'S', @cell_2.render(true)
+  end
+
+
+  #render testing
+  def test_it_has_a_render
+    skip
+    assert_equal '.', @cell_1.render
+  end
+
+  def test_it_can_render_hit
+    skip
+    @cell_2.fire_upon
+    assert_equal 'H', @cell_2.render
+  end
+
+  def test_it_has_render_sunk
+    skip
+    @cell_2.place_ship(@cruiser)
+    @cruiser.hit
+    @cruiser.hit
+    @cruiser.hit
+    assert_equal 'X', @cell_2.render
   end
 
 end
